@@ -25,11 +25,11 @@ public class CommentServiceImpl implements CommentService{
 //        if (!postRepository.findById(commentDto.getPostNum()).isPresent()) {
 //            throw new Error("글이 존재하지 않습니다.");
 //        }
-
         Comment comment = new Comment(commentDto);
         Account account = authService.getMyUserWithAuthorities();
         comment.setCommenter(account);
         commentRepository.save(comment);
         return comment;
     }
+
 }

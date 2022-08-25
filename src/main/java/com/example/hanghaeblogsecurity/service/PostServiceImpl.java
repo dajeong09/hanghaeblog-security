@@ -4,6 +4,7 @@ import com.example.hanghaeblogsecurity.domain.Account;
 import com.example.hanghaeblogsecurity.domain.Post;
 import com.example.hanghaeblogsecurity.dto.PostDto;
 import com.example.hanghaeblogsecurity.jwt.JwtUtils;
+import com.example.hanghaeblogsecurity.repository.CommentRepository;
 import com.example.hanghaeblogsecurity.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class PostServiceImpl implements PostService{
 
     private final JwtUtils jwtUtils;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
     private final AuthService authService;
 
     //사용자 인증
@@ -30,6 +32,8 @@ public class PostServiceImpl implements PostService{
         }
         return jwtUtils.getAccountFromAuthentication();
     }
+
+
 
     @Override
     @Transactional
@@ -73,5 +77,23 @@ public class PostServiceImpl implements PostService{
         } else {
             throw new Error("권한이 없습니다.");
         }
+    }
+
+    @Override
+    public PostDto getPost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("글이 존재하지 않습니다.")
+        );
+        PostDto postDto = PostDto.builder()
+                //.postId(post.getPostId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .createdAt(post.getCreatedAt())
+                .modifiedAt(post.getModifiedAt())
+                .writer(post.getWriter())
+                .commentList(commentRepository.findAllByPostNum(postId))
+                .build();
+
+        return postDto;
     }
 }

@@ -29,4 +29,9 @@ public class PostController {
     public void deletePost(@PathVariable Long postId, HttpServletRequest request) {
         postService.deletePost(postId, request);
     }
+
+    @GetMapping("/post/{postId}")
+    public PostDto getPost(@PathVariable Long postId) {
+        return postService.getPost(postId);
+    }
 }
