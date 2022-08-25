@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration @EnableWebSecurity @RequiredArgsConstructor
@@ -52,7 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/signup").permitAll();
         http.authorizeRequests().antMatchers("/auth/signin").permitAll();
-        //http.authorizeRequests().antMatchers(GET, "auth/account/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(GET, "/auth/account").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/auth/signout").permitAll();
+        http.authorizeRequests().antMatchers("/post/**").permitAll();
+        http.authorizeRequests().antMatchers("/comment/**").permitAll();
 
         http.authorizeRequests().anyRequest().authenticated();
         //http.addFilter(new CustomAthenticationFilter(authenticationManagerBean()));

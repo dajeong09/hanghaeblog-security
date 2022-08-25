@@ -52,12 +52,13 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         // ROLE 확인
         UserRoleEnum role = UserRoleEnum.ROLE_USER;
-        if (signupRequestDto.isAdmin()) {
-            if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
-            }
-            role = UserRoleEnum.ROLE_ADMIN;
-        }
+        //관리자 권한 계정 생성
+//        if (signupRequestDto.isAdmin()) {
+//            if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
+//                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+//            }
+//            role = UserRoleEnum.ROLE_ADMIN;
+//        }
         // DB 저장
         Account account = new Account(signupRequestDto.getNickname(), password, role);
         log.info("{} 회원 정보를 DB에 저장", account.getNickname());

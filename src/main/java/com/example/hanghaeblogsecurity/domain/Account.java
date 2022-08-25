@@ -12,7 +12,7 @@ import java.util.Collection;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Account extends Timestamped{
+public class Account{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "account_id")
